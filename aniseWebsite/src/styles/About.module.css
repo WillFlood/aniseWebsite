@@ -1,0 +1,130 @@
+.aboutSection {
+  position: relative;
+  min-height: 120vh;
+  background: var(--color-background);
+  padding: 6rem 0 4rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.aboutDiamondWrapper {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: repeat(3, minmax(0, auto));
+  grid-template-areas:
+    ". top ."
+    "left center right"
+    ". bottom .";
+  width: 90%;
+  max-width: auto;
+  min-height: 700px;
+  row-gap: 2.5rem;
+  justify-items: center;
+  align-items: center;
+}
+
+.aboutImageContainer {
+  grid-area: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.aboutImage {
+  width: 420px;
+  height: 420px;
+  object-fit: contain;
+}
+
+.aboutMissionBlock,
+.aboutWhatBlock,
+.aboutExamplesBlock,
+.aboutDecentralisedBlock {
+  position: static;
+  left: unset;
+  right: unset;
+  top: unset;
+  bottom: unset;
+  transform: none;
+  flex: unset;
+  width: 100%;
+  max-width: 700px;
+  margin: 0;
+  box-sizing: border-box;
+  line-height: 1.85;
+  padding: 2rem 2.5rem;
+  background: #e6defa;
+  color: #3B2177;
+}
+
+.aboutMissionBlock {
+  font-size: 1.1rem;
+  border-radius: 1.2rem;
+  padding: 1.2rem 2.2rem;
+  box-shadow: 0 2px 12px rgba(59,33,119,0.06);
+  text-align: center;
+  grid-area: top;
+  margin-bottom: 0;
+}
+
+.aboutWhatBlock {
+  font-size: 1.05rem;
+  border-radius: 1.2rem;
+  padding: 1.2rem 2.2rem;
+  box-shadow: 0 2px 12px rgba(123,90,224,0.06);
+  text-align: center;
+  grid-area: bottom;
+  margin-top: 0;
+}
+
+.aboutExamplesBlock {
+  font-size: 1.05rem;
+  border-radius: 1.2rem;
+  padding: 1.2rem 2.2rem;
+  box-shadow: 0 2px 12px rgba(108,71,198,0.06);
+  text-align: center;
+  grid-area: left;
+  margin-right: 0;
+}
+
+.aboutDecentralisedBlock {
+  font-size: 1.05rem;
+  border-radius: 1.2rem;
+  padding: 1.2rem 2.2rem;
+  box-shadow: 0 2px 12px rgba(59,33,119,0.06);
+  text-align: center;
+  grid-area: right;
+  margin-left: 0;
+}
+
+.aboutBlockHeading {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+  letter-spacing: -0.01em;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+}
+
+@media (max-width: 900px) {
+  .aboutDiamondWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .aboutMissionBlock,
+  .aboutWhatBlock,
+  .aboutExamplesBlock,
+  .aboutDecentralisedBlock {
+    width: 98vw;
+    max-width: 500px;
+    min-width: 0;
+    margin: 0 auto;
+    padding: 1.2rem 1rem;
+  }
+  .aboutImageContainer {
+    order: 0;
+    margin-bottom: 1.5rem;
+  }
+}

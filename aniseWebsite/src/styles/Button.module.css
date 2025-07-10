@@ -1,0 +1,35 @@
+.primary {
+  background: var(--color-primary);
+  color: var(--color-white);
+  font-weight: 700;
+  font-size: 1.15rem;
+  padding: 1rem 2.2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(59, 33, 119, 0.10);
+  transition: background 0.2s, box-shadow 0.2s;
+  border: none;
+}
+
+.primary:hover, .primary:focus {
+  background: var(--color-accent);
+  box-shadow: 0 6px 18px rgba(59, 33, 119, 0.13);
+  outline: 2px solid var(--color-accent);
+}
+
+.secondary {
+  background: var(--color-buttonSecondary);
+  color: var(--color-buttonSecondaryText);
+  font-weight: 700;
+  font-size: 1.15rem;
+  padding: 1rem 2.2rem;
+  border-radius: 12px;
+  border: 2px solid var(--color-primary);
+  transition: background 0.2s, color 0.2s, border 0.2s;
+}
+
+.secondary:hover, .secondary:focus {
+  background: var(--color-background);
+  color: var(--color-accent);
+  border: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-accent);
+} 

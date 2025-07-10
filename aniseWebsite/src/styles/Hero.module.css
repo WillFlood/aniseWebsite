@@ -1,0 +1,84 @@
+.hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 2rem 3rem 2rem 3rem;
+  background: var(--color-background);
+  gap: 4rem;
+}
+
+.textSection {
+  max-width: 750px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding-left: 1rem;
+  padding-top: 3rem;
+}
+
+.textSection h1 {
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 1.5rem;
+  padding-top: 1rem;
+  line-height: 1.1;
+}
+
+.textSection p {
+  font-size: 1.45rem;
+  color: var(--color-primary);
+  margin-bottom: 2.5rem;
+  line-height: 1.5;
+  padding-top: 2rem;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1.5rem;
+  padding-top: 7rem;
+}
+
+.illustrationSection {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.illustrationSection img {
+  max-width: 100%;
+  width: 50vw;
+  height: 50vw;
+  object-fit: contain;
+  display: block;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+@media (max-width: 1100px) {
+  .hero {
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 2.5rem 1.2rem 1.5rem 1.2rem;
+    gap: 2.5rem;
+  }
+  .illustrationSection {
+    justify-content: flex-start;
+  }
+  .illustrationSection img {
+    max-width: 320px;
+    width: 80vw;
+    height: auto;
+  }
+  .textSection h1 {
+    font-size: 2.5rem;
+    padding-top: 0.5rem;
+  }
+  .buttonGroup {
+    padding-top: 2rem;
+  }
+} 
