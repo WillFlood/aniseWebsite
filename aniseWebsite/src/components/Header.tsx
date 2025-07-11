@@ -5,9 +5,10 @@ import Button from './Button';
 
 interface HeaderProps {
   onDownloadClick: () => void;
+  onEnquiriesClick?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onDownloadClick }) => {
+const Header: React.FC<HeaderProps> = ({ onDownloadClick, onEnquiriesClick }) => {
   const [active, setActive] = useState('home');
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
@@ -43,14 +44,15 @@ const Header: React.FC<HeaderProps> = ({ onDownloadClick }) => {
   return (
     <header className={styles.header}>
       <div className={styles.logoSection}>
+        <img src={logo} alt="Anise Logo" className={styles.logo} />
+        <span className={styles.brand}>Anise</span>
         <button
           className={styles.mobileLogoBtn}
           onClick={() => setMobileNavOpen((open) => !open)}
           aria-label="Toggle navigation"
         >
-          <img src={logo} alt="Anise Logo" className={styles.logo} />
+          {/* Icon for mobile menu (e.g., hamburger) could go here if desired */}
         </button>
-        <span className={styles.brand}>Anise</span>
       </div>
       <nav className={`${styles.nav} ${mobileNavOpen ? styles.open : ''}`}>
         <a
@@ -81,8 +83,23 @@ const Header: React.FC<HeaderProps> = ({ onDownloadClick }) => {
         >
           FAQ
         </a>
+        <a
+          href="#resources"
+          className={active === 'resources' ? styles.active : ''}
+          onClick={() => handleNavClick('resources')}
+        >
+          Resources
+        </a>
+        <a
+          href="#"
+          className={styles.enquiriesBtn}
+          onClick={e => { e.preventDefault(); if (typeof onEnquiriesClick === 'function') onEnquiriesClick(); }}
+        >
+          Enquiries
+        </a>
         <div className={styles.mobileOnlyBtns}>
           <a href="#" className={styles.mobileAuthBtn}>Sign In / Register</a>
+          <a href="#" className={styles.mobileEnquiriesBtn} onClick={e => { e.preventDefault(); if (typeof onEnquiriesClick === 'function') onEnquiriesClick(); }}>Enquiries</a>
           <a href="#" className={styles.mobileDownloadBtn} onClick={e => { e.preventDefault(); onDownloadClick(); }}>Download App</a>
         </div>
       </nav>

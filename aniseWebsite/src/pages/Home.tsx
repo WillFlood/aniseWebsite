@@ -14,6 +14,11 @@ const Home: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [showEnquiriesModal, setShowEnquiriesModal] = useState(false);
+  const [enquiryEmail, setEnquiryEmail] = useState('');
+  const [enquiryMandate, setEnquiryMandate] = useState('');
+  const [enquiryReason, setEnquiryReason] = useState('');
+  const [enquirySubmitted, setEnquirySubmitted] = useState(false);
 
   const handleDownloadClick = () => {
     setShowModal(true);
@@ -28,10 +33,25 @@ const Home: React.FC = () => {
     setSubmitted(true);
     // Here you would send the email to your backend or service
   };
+  const handleEnquiriesClick = () => {
+    setShowEnquiriesModal(true);
+  };
+  const handleEnquiriesModalClose = () => {
+    setShowEnquiriesModal(false);
+    setEnquiryEmail('');
+    setEnquiryMandate('');
+    setEnquiryReason('');
+    setEnquirySubmitted(false);
+  };
+  const handleEnquiriesSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setEnquirySubmitted(true);
+    // Here you would send the enquiry to your backend or service
+  };
 
   return (
     <>
-      <Header onDownloadClick={handleDownloadClick} />
+      <Header onDownloadClick={handleDownloadClick} onEnquiriesClick={handleEnquiriesClick} />
       <Hero onDownloadClick={handleDownloadClick} />
       <section id="about" className={aboutStyles.aboutSection} style={{ paddingTop: '2rem' }}>
         <div className={aboutStyles.aboutDiamondWrapper}>
@@ -125,6 +145,46 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
+      <section id="resources" style={{ maxWidth: 700, margin: '4rem auto 0 auto', padding: '2rem 0', textAlign: 'left' }}>
+        <h1 style={{ fontSize: '2.5rem', color: 'var(--color-primary)', marginBottom: '1rem', textAlign: 'center' }}>DAO Resources</h1>
+        <p style={{ fontSize: '1.2rem', marginBottom: '2rem', textAlign: 'center' }}>
+          Learn about DAOs, how they work, and how you can use them to create micro-entities for service provision and governance. Here are some of the best open source resources to get started:
+        </p>
+        <ol style={{ paddingLeft: '1.2rem' }}>
+          {[
+            {
+              title: 'Ethereum.org: DAOs',
+              description: 'A comprehensive introduction to DAOs, how they work, and why they matter.',
+              url: 'https://ethereum.org/en/dao/'
+            },
+            {
+              title: 'Aragon: What is a DAO?',
+              description: 'Learn about DAOs, governance, and how to create your own with Aragon.',
+              url: 'https://aragon.org/dao'
+            },
+            {
+              title: 'DAOhaus: Build a DAO',
+              description: 'A platform and resource hub for building and managing DAOs with open source tools.',
+              url: 'https://daohaus.club/'
+            },
+            {
+              title: 'DAOstack Academy',
+              description: 'Educational resources and guides for building and participating in DAOs.',
+              url: 'https://daostack.io/academy/'
+            },
+            {
+              title: 'BanklessDAO: DAO Education Hub',
+              description: 'A community-driven hub with guides, articles, and resources for learning about DAOs and decentralized governance.',
+              url: 'https://bankless.community/dao-education-hub'
+            }
+          ].map((res, idx) => (
+            <li key={idx} style={{ marginBottom: '1.5rem' }}>
+              <a href={res.url} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 700, color: 'var(--color-accent)', fontSize: '1.15rem' }}>{res.title}</a>
+              <div style={{ fontSize: '1rem', color: 'var(--color-primary)', marginTop: '0.3rem' }}>{res.description}</div>
+            </li>
+          ))}
+        </ol>
+      </section>
       <Footer />
       {showModal && (
         <div className={headerStyles.modalOverlay} onClick={handleModalClose}>
@@ -160,6 +220,58 @@ const Home: React.FC = () => {
                   style={{ background: '#2b1a44', color: '#fff', border: '1.5px solid #b388ff', fontSize: '1.1rem' }}
                 />
                 <Button type="submit" style={{ background: '#7c4dff', color: '#fff', fontWeight: 700, fontSize: '1.1rem', padding: '0.9rem 0' }}>Join Waitlist</Button>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
+      {showEnquiriesModal && (
+        <div className={headerStyles.modalOverlay} onClick={handleEnquiriesModalClose}>
+          <div
+            className={headerStyles.modal}
+            onClick={e => e.stopPropagation()}
+            style={{ background: '#1f142c', color: '#fff', maxWidth: '600px', minHeight: '480px', fontSize: '1.15rem', padding: '3.5rem 2.5rem 2.5rem 2.5rem', borderRadius: '20px', boxShadow: '0 8px 32px rgba(123,90,224,0.10)' }}
+          >
+            <button className={headerStyles.modalClose} onClick={handleEnquiriesModalClose}>&times;</button>
+            <h2 style={{ color: '#fff', fontSize: '2.1rem', fontWeight: 800, marginBottom: '1.1rem', marginTop: '0.5rem' }}>
+              Enquiries: Customised DAO Consultancy
+            </h2>
+            <div style={{ color: '#b388ff', fontWeight: 600, marginBottom: '0.7rem', fontSize: '1.08rem' }}>
+              If you would like your own Customised DAO, that might be possible. Fill out the enquiry form here and we will get back to you shortly!
+            </div>
+            {enquirySubmitted ? (
+              <div className={headerStyles.modalSuccess} style={{ color: '#b388ff', fontSize: '1.2rem' }}>
+                Thank you for your enquiry! We'll get back to you soon.
+              </div>
+            ) : (
+              <form onSubmit={handleEnquiriesSubmit} className={headerStyles.modalForm}>
+                <input
+                  type="email"
+                  placeholder="Email of Creator"
+                  value={enquiryEmail}
+                  onChange={e => setEnquiryEmail(e.target.value)}
+                  required
+                  className={headerStyles.modalInput}
+                  style={{ background: 'rgba(123,90,224,0.08)', color: '#fff', border: 'none', fontSize: '1.1rem', borderRadius: '12px', boxShadow: '0 2px 8px rgba(123,90,224,0.07)', padding: '1rem 1.2rem', marginBottom: '0.5rem' }}
+                />
+                <input
+                  type="text"
+                  placeholder="Mandate"
+                  value={enquiryMandate}
+                  onChange={e => setEnquiryMandate(e.target.value)}
+                  required
+                  className={headerStyles.modalInput}
+                  style={{ background: 'rgba(123,90,224,0.08)', color: '#fff', border: 'none', fontSize: '1.1rem', borderRadius: '12px', boxShadow: '0 2px 8px rgba(123,90,224,0.07)', padding: '1rem 1.2rem', marginBottom: '0.5rem' }}
+                />
+                <textarea
+                  placeholder="Why do you want this anise?"
+                  value={enquiryReason}
+                  onChange={e => setEnquiryReason(e.target.value)}
+                  required
+                  className={headerStyles.modalInput}
+                  style={{ background: 'rgba(123,90,224,0.08)', color: '#fff', border: 'none', fontSize: '1.1rem', borderRadius: '12px', boxShadow: '0 2px 8px rgba(123,90,224,0.07)', padding: '1rem 1.2rem', minHeight: '90px', resize: 'vertical', marginBottom: '0.5rem' }}
+                />
+                <Button type="submit" style={{ background: 'linear-gradient(90deg, #b388ff 0%, #7b5ae0 100%)', color: '#fff', fontWeight: 700, fontSize: '1.1rem', padding: '0.9rem 0', border: 'none', borderRadius: '12px', boxShadow: '0 2px 12px rgba(123,90,224,0.13)', marginTop: '0.7rem', letterSpacing: '0.01em' }}>Submit Enquiry</Button>
               </form>
             )}
           </div>
