@@ -202,6 +202,65 @@
   padding: 0;
   margin-right: 1rem;
   cursor: pointer;
+  align-items: center;
+}
+
+.mobileLogoIcon {
+  display: flex;
+  align-items: center;
+  margin-right: 0.5rem;
+}
+
+.mobileLogoText {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: 0.02em;
+}
+
+.mobileLogoImg {
+  width: 2.2rem;
+  height: 2.2rem;
+  display: block;
+}
+
+.desktopNavLinks {
+  display: flex;
+  gap: 2.5rem;
+}
+
+.mobileDropdownMenu {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(59,33,119,0.08);
+  border-radius: 0 0 1.2rem 1.2rem;
+  position: absolute;
+  top: 70px;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  padding: 2rem 0 1rem 0;
+  animation: fadeIn 0.2s;
+}
+
+.mobileDropdownMenu a {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  padding: 1rem 2rem;
+  text-align: left;
+  text-decoration: none;
+  border-radius: 0.7rem;
+  margin: 0.2rem 1.5rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.mobileDropdownMenu a.active,
+.mobileDropdownMenu a:hover {
+  background: var(--color-background);
+  color: var(--color-accent);
 }
 
 .mobileOnlyBtns {
@@ -247,7 +306,7 @@
     display: flex;
   }
   .mobileLogoBtn {
-    display: inline-block;
+    display: flex;
   }
   .logoSection {
     flex: 1;
@@ -255,8 +314,7 @@
     align-items: center;
   }
   .brand {
-    font-size: 1.3rem;
-    margin-left: 0.5rem;
+    display: none;
   }
   .downloadBtn {
     display: none;
@@ -294,6 +352,15 @@
     background: var(--color-dark-purple) !important;
     color: #fff !important;
   }
+  .desktopNavLinks {
+    display: none;
+  }
+  .mobileDropdownMenu {
+    display: flex;
+  }
+  .logo {
+    display: none;
+  }
 }
 
 @media (min-width: 901px) {
@@ -310,6 +377,9 @@
     border-radius: 0;
   }
   .mobileOnlyBtns {
+    display: none !important;
+  }
+  .mobileDropdownMenu {
     display: none !important;
   }
 } 

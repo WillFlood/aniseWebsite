@@ -34,22 +34,46 @@ const features = [
   }
 ];
 
-const Features: React.FC = () => (
-  <main id="features" className={styles.featuresMain}>
-    <h1 className={styles.heading}>Features</h1>
-    <p className={styles.subheading}>
-      Everything you need to create, manage, and grow your DAO—securely, transparently, and with ease.
-    </p>
-    <section className={styles.grid}>
-      {features.map((feature, idx) => (
-        <div className={styles.card} key={idx}>
-          <div className={styles.icon}>{feature.icon}</div>
-          <div className={styles.title}>{feature.title}</div>
-          <div className={styles.description}>{feature.description}</div>
-        </div>
-      ))}
-    </section>
-  </main>
-);
+const bgColors = [
+  '#f7f3ff',
+  '#e0e7ff',
+];
+
+const Features: React.FC = () => {
+  // Group features into rows of 2
+  const featureRows = [];
+  for (let i = 0; i < features.length; i += 2) {
+    featureRows.push(features.slice(i, i + 2));
+  }
+  return (
+    <main id="features" className={styles.featuresMainFull} style={{ scrollMarginTop: '90px' }}>
+      <div className={styles.featuresHeader}>
+        <h1 className={styles.heading}>Features</h1>
+        <p className={styles.subheading}>
+          Everything you need to create, manage, and grow your DAO—securely, transparently, and with ease.
+        </p>
+      </div>
+      <section className={styles.featuresRows2x2}>
+        {featureRows.map((row, rowIdx) => (
+          <div
+            className={styles.featureRow2x2}
+            key={rowIdx}
+            style={{ background: bgColors[rowIdx % bgColors.length] }}
+          >
+            {row.map((feature, idx) => (
+              <div className={styles.featureCol2x2} key={feature.title}>
+                <div className={styles.featureIconBig}>{feature.icon}</div>
+                <div className={styles.featureTextBlockBig}>
+                  <div className={styles.featureTitleBig}>{feature.title}</div>
+                  <div className={styles.featureDescBig}>{feature.description}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </section>
+    </main>
+  );
+};
 
 export default Features; 

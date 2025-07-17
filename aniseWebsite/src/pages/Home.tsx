@@ -9,6 +9,23 @@ import Button from '../components/Button';
 import headerStyles from '../styles/Header.module.css';
 import startIcon from '../assets/start.svg';
 import { Parallax } from 'react-scroll-parallax';
+import faqIcon from '../assets/faq.svg';
+import { useInView } from 'react-intersection-observer';
+
+// FadeInSection component for fade-in effect
+const FadeInSection: React.FC<{ children: React.ReactNode; className?: string; style?: React.CSSProperties; id?: string }> = ({ children, className, style, id }) => {
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.15 });
+  return (
+    <section
+      ref={ref}
+      id={id}
+      className={className + ' fade-in-section' + (inView ? ' visible' : '')}
+      style={style}
+    >
+      {children}
+    </section>
+  );
+};
 
 const Home: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -19,6 +36,7 @@ const Home: React.FC = () => {
   const [enquiryMandate, setEnquiryMandate] = useState('');
   const [enquiryReason, setEnquiryReason] = useState('');
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleDownloadClick = () => {
     setShowModal(true);
@@ -28,9 +46,13 @@ const Home: React.FC = () => {
     setEmail('');
     setSubmitted(false);
   };
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    // Simulate async (replace with real API call)
+    await new Promise(res => setTimeout(res, 1200));
     setSubmitted(true);
+    setLoading(false);
     // Here you would send the email to your backend or service
   };
   const handleEnquiriesClick = () => {
@@ -53,7 +75,7 @@ const Home: React.FC = () => {
     <>
       <Header onDownloadClick={handleDownloadClick} onEnquiriesClick={handleEnquiriesClick} />
       <Hero onDownloadClick={handleDownloadClick} />
-      <section id="about" className={aboutStyles.aboutSection} style={{ paddingTop: '2rem' }}>
+      <FadeInSection id="about" className={aboutStyles.aboutSection} style={{ paddingTop: '2rem' }}>
         <div className={aboutStyles.aboutDiamondWrapper}>
           <div className={aboutStyles.aboutImageContainer}>
             <img src={aboutIcon} alt="About Illustration" className={aboutStyles.aboutImage} style={{ width: '520px', height: '520px' }} />
@@ -91,100 +113,112 @@ const Home: React.FC = () => {
             </ul>
           </div>
         </div>
-      </section>
-      <Features />
-      <section id="faq" style={{ width: '100%', textAlign: 'center', margin: '4rem 0 0 0', padding: 0, scrollMarginTop: '100px' }}>
-        <h2 style={{ fontSize: '2.7rem', color: 'var(--color-primary)', fontWeight: 800, margin: '0 0 2rem 0', letterSpacing: '-0.02em' }}>
-          FAQs
-        </h2>
-        <div style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '2rem',
-          justifyContent: 'center',
-          maxWidth: 1200,
-          margin: '0 auto',
-        }}>
-          <div style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px rgba(59,33,119,0.06)', padding: '2rem', maxWidth: 350, minWidth: 260, flex: '1 1 300px', textAlign: 'left' }}>
-            <strong>What is Anise?</strong>
-            <p>Anise is a platform for creating, governing, and managing decentralised autonomous organisations (DAOs) with ease and transparency.</p>
+      </FadeInSection>
+      <FadeInSection>
+        <Features />
+      </FadeInSection>
+      <FadeInSection>
+        <section id="faq" style={{ width: '100%', textAlign: 'center', margin: '4rem 0 0 0', padding: 0, scrollMarginTop: '100px', background: 'linear-gradient(90deg, #f7f3ff 0%, #e0e7ff 100%)', borderRadius: '2rem', boxShadow: '0 4px 24px rgba(59,33,119,0.06)', paddingBottom: '3rem' }}>
+          <img src={faqIcon} alt="FAQ Icon" style={{ width: 180, margin: '2.5rem auto 2rem auto', display: 'block', filter: 'drop-shadow(0 8px 32px #7c4dff88)' }} />
+          <h2 style={{ fontSize: '3.2rem', color: 'var(--color-primary)', fontWeight: 900, margin: '0 0 2.5rem 0', letterSpacing: '-0.02em' }}>
+            FAQs
+          </h2>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))',
+              gap: '3rem',
+              justifyContent: 'center',
+              maxWidth: 1000,
+              margin: '0 auto',
+              padding: '0 1rem',
+            }}
+          >
+            <div style={{ background: '#fff', borderRadius: 28, boxShadow: '0 6px 32px rgba(59,33,119,0.10)', padding: '3rem 2rem 2.5rem 2rem', minHeight: 210, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', textAlign: 'left' }}>
+              <strong style={{ fontSize: '1.55rem', color: 'var(--color-primary)', marginBottom: '1.1rem' }}>What is Anise?</strong>
+              <p style={{ color: 'var(--color-secondary)', fontSize: '1.22rem', margin: 0 }}>Anise is a platform for creating, governing, and managing decentralised autonomous organisations (DAOs) with ease and transparency.</p>
+            </div>
+            <div style={{ background: '#fff', borderRadius: 28, boxShadow: '0 6px 32px rgba(59,33,119,0.10)', padding: '3rem 2rem 2.5rem 2rem', minHeight: 210, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', textAlign: 'left' }}>
+              <strong style={{ fontSize: '1.55rem', color: 'var(--color-primary)', marginBottom: '1.1rem' }}>Who can use Anise?</strong>
+              <p style={{ color: 'var(--color-secondary)', fontSize: '1.22rem', margin: 0 }}>Anyone—groups, communities, or organisations—can use Anise to collaborate and make impactful decisions together.</p>
+            </div>
+            <div style={{ background: '#fff', borderRadius: 28, boxShadow: '0 6px 32px rgba(59,33,119,0.10)', padding: '3rem 2rem 2.5rem 2rem', minHeight: 210, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', textAlign: 'left' }}>
+              <strong style={{ fontSize: '1.55rem', color: 'var(--color-primary)', marginBottom: '1.1rem' }}>Is Anise open source?</strong>
+              <p style={{ color: 'var(--color-secondary)', fontSize: '1.22rem', margin: 0 }}>Parts of Anise will be open source, and we encourage community contributions and transparency.</p>
+            </div>
+            <div style={{ background: '#fff', borderRadius: 28, boxShadow: '0 6px 32px rgba(59,33,119,0.10)', padding: '3rem 2rem 2.5rem 2rem', minHeight: 210, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', textAlign: 'left' }}>
+              <strong style={{ fontSize: '1.55rem', color: 'var(--color-primary)', marginBottom: '1.1rem' }}>How much does it cost?</strong>
+              <p style={{ color: 'var(--color-secondary)', fontSize: '1.22rem', margin: 0 }}>It doesn’t cost a thing to download. You pay however much you want. This all benefits the users! There will be a small admin fee in places though.</p>
+            </div>
+            <div style={{ background: '#fff', borderRadius: 28, boxShadow: '0 6px 32px rgba(59,33,119,0.10)', padding: '3.5rem 2.5rem 3rem 2.5rem', minHeight: 230, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gridColumn: '1 / -1' }}>
+              <strong style={{ fontSize: '1.7rem', color: 'var(--color-primary)', marginBottom: '1.2rem' }}>What are charity Anises?</strong>
+              <p style={{ color: 'var(--color-secondary)', fontSize: '1.28rem', margin: 0, maxWidth: 600 }}>Anise does not take profit from charity Anises, only fees to keep the app running. 100% of donations go to the intended causes, minus minimal admin costs.</p>
+            </div>
           </div>
-          <div style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px rgba(59,33,119,0.06)', padding: '2rem', maxWidth: 350, minWidth: 260, flex: '1 1 300px', textAlign: 'left' }}>
-            <strong>Who can use Anise?</strong>
-            <p>Anyone—groups, communities, or organisations—can use Anise to collaborate and make impactful decisions together.</p>
+        </section>
+      </FadeInSection>
+      <FadeInSection>
+        <section style={{ width: '100%', textAlign: 'center', margin: '4rem 0 0 0', padding: 0 }}>
+          <h2 style={{ fontSize: '2.2rem', color: 'var(--color-primary)', fontWeight: 800, margin: '0 0 1.5rem 0', letterSpacing: '-0.02em' }}>
+            So what now..?
+          </h2>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2.5rem', flexWrap: 'wrap', flexDirection: 'row' }}>
+            <Parallax speed={-10}>
+              <img src={startIcon} alt="Start" style={{ width: 600, height: 600 }} />
+            </Parallax>
+            <div style={{ textAlign: 'left', maxWidth: 500 }}>
+              <h3 style={{ fontSize: '2.2rem', color: 'var(--color-accent)', fontWeight: 700, margin: 0 }}>
+                ...Begin and try now!
+              </h3>
+              <p style={{ margin: '1.5rem 0 0 0', fontSize: '1.45rem', color: 'var(--color-primary)', fontWeight: 500, lineHeight: 1.5 }}>
+                Whether it's joining a group which tailors to your needs or creating your own anise. Whether you want to donate to a charity anise or make a private group with your friends. Your journey starts here.
+              </p>
+            </div>
           </div>
-          <div style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px rgba(59,33,119,0.06)', padding: '2rem', maxWidth: 350, minWidth: 260, flex: '1 1 300px', textAlign: 'left' }}>
-            <strong>Is Anise open source?</strong>
-            <p>Parts of Anise will be open source, and we encourage community contributions and transparency.</p>
-          </div>
-          <div style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px rgba(59,33,119,0.06)', padding: '2rem', maxWidth: 350, minWidth: 260, flex: '1 1 300px', textAlign: 'left' }}>
-            <strong>How much does it cost?</strong>
-            <p>It doesn’t cost a thing to download. You pay however much you want. This all benefits the users! There will be a small admin fee in places though.</p>
-          </div>
-          <div style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px rgba(59,33,119,0.06)', padding: '2rem', maxWidth: 350, minWidth: 260, flex: '1 1 300px', textAlign: 'left' }}>
-            <strong>What are charity Anises?</strong>
-            <p>Anise does not take profit from charity Anises, only fees to keep the app running. 100% of donations go to the intended causes, minus minimal admin costs.</p>
-          </div>
-        </div>
-      </section>
-      <section style={{ width: '100%', textAlign: 'center', margin: '4rem 0 0 0', padding: 0 }}>
-        <h2 style={{ fontSize: '2.2rem', color: 'var(--color-primary)', fontWeight: 800, margin: '0 0 1.5rem 0', letterSpacing: '-0.02em' }}>
-          So what now..?
-        </h2>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2.5rem', flexWrap: 'wrap', flexDirection: 'row' }}>
-          <Parallax speed={-10}>
-            <img src={startIcon} alt="Start" style={{ width: 600, height: 600 }} />
-          </Parallax>
-          <div style={{ textAlign: 'left', maxWidth: 500 }}>
-            <h3 style={{ fontSize: '2.2rem', color: 'var(--color-accent)', fontWeight: 700, margin: 0 }}>
-              ...Begin and try now!
-            </h3>
-            <p style={{ margin: '1.5rem 0 0 0', fontSize: '1.45rem', color: 'var(--color-primary)', fontWeight: 500, lineHeight: 1.5 }}>
-              Whether it's joining a group which tailors to your needs or creating your own anise. Whether you want to donate to a charity anise or make a private group with your friends. Your journey starts here.
-            </p>
-          </div>
-        </div>
-      </section>
-      <section id="resources" style={{ maxWidth: 700, margin: '4rem auto 0 auto', padding: '2rem 0', textAlign: 'left' }}>
-        <h1 style={{ fontSize: '2.5rem', color: 'var(--color-primary)', marginBottom: '1rem', textAlign: 'center' }}>DAO Resources</h1>
-        <p style={{ fontSize: '1.2rem', marginBottom: '2rem', textAlign: 'center' }}>
-          Learn about DAOs, how they work, and how you can use them to create micro-entities for service provision and governance. Here are some of the best open source resources to get started:
-        </p>
-        <ol style={{ paddingLeft: '1.2rem' }}>
-          {[
-            {
-              title: 'Ethereum.org: DAOs',
-              description: 'A comprehensive introduction to DAOs, how they work, and why they matter.',
-              url: 'https://ethereum.org/en/dao/'
-            },
-            {
-              title: 'Aragon: What is a DAO?',
-              description: 'Learn about DAOs, governance, and how to create your own with Aragon.',
-              url: 'https://aragon.org/dao'
-            },
-            {
-              title: 'DAOhaus: Build a DAO',
-              description: 'A platform and resource hub for building and managing DAOs with open source tools.',
-              url: 'https://daohaus.club/'
-            },
-            {
-              title: 'DAOstack Academy',
-              description: 'Educational resources and guides for building and participating in DAOs.',
-              url: 'https://daostack.io/academy/'
-            },
-            {
-              title: 'BanklessDAO: DAO Education Hub',
-              description: 'A community-driven hub with guides, articles, and resources for learning about DAOs and decentralized governance.',
-              url: 'https://bankless.community/dao-education-hub'
-            }
-          ].map((res, idx) => (
-            <li key={idx} style={{ marginBottom: '1.5rem' }}>
-              <a href={res.url} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 700, color: 'var(--color-accent)', fontSize: '1.15rem' }}>{res.title}</a>
-              <div style={{ fontSize: '1rem', color: 'var(--color-primary)', marginTop: '0.3rem' }}>{res.description}</div>
-            </li>
-          ))}
-        </ol>
-      </section>
+        </section>
+      </FadeInSection>
+      <FadeInSection id="resources">
+        <section style={{ maxWidth: 700, margin: '4rem auto 0 auto', padding: '2rem 0', textAlign: 'left' }}>
+          <h1 style={{ fontSize: '2.5rem', color: 'var(--color-primary)', marginBottom: '1rem', textAlign: 'center' }}>DAO Resources</h1>
+          <p style={{ fontSize: '1.2rem', marginBottom: '2rem', textAlign: 'center' }}>
+            Learn about DAOs, how they work, and how you can use them to create micro-entities for service provision and governance. Here are some of the best open source resources to get started:
+          </p>
+          <ol style={{ paddingLeft: '1.2rem' }}>
+            {[
+              {
+                title: 'Ethereum.org: DAOs',
+                description: 'A comprehensive introduction to DAOs, how they work, and why they matter.',
+                url: 'https://ethereum.org/en/dao/'
+              },
+              {
+                title: 'Aragon: What is a DAO?',
+                description: 'Learn about DAOs, governance, and how to create your own with Aragon.',
+                url: 'https://aragon.org/dao'
+              },
+              {
+                title: 'DAOhaus: Build a DAO',
+                description: 'A platform and resource hub for building and managing DAOs with open source tools.',
+                url: 'https://daohaus.club/'
+              },
+              {
+                title: 'DAOstack Academy',
+                description: 'Educational resources and guides for building and participating in DAOs.',
+                url: 'https://daostack.io/academy/'
+              },
+              {
+                title: 'BanklessDAO: DAO Education Hub',
+                description: 'A community-driven hub with guides, articles, and resources for learning about DAOs and decentralized governance.',
+                url: 'https://bankless.community/dao-education-hub'
+              }
+            ].map((res, idx) => (
+              <li key={idx} style={{ marginBottom: '1.5rem' }}>
+                <a href={res.url} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 700, color: 'var(--color-accent)', fontSize: '1.15rem' }}>{res.title}</a>
+                <div style={{ fontSize: '1rem', color: 'var(--color-primary)', marginTop: '0.3rem' }}>{res.description}</div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      </FadeInSection>
       <Footer />
       {showModal && (
         <div className={headerStyles.modalOverlay} onClick={handleModalClose}>
@@ -219,7 +253,38 @@ const Home: React.FC = () => {
                   className={headerStyles.modalInput}
                   style={{ background: '#2b1a44', color: '#fff', border: '1.5px solid #b388ff', fontSize: '1.1rem' }}
                 />
-                <Button type="submit" style={{ background: '#7c4dff', color: '#fff', fontWeight: 700, fontSize: '1.1rem', padding: '0.9rem 0' }}>Join Waitlist</Button>
+                {loading && (
+                  <svg
+                    width="44"
+                    height="44"
+                    viewBox="0 0 44 44"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="gear-spinner"
+                    style={{ display: 'block', margin: '0.5rem auto' }}
+                  >
+                    <g>
+                      <circle cx="22" cy="22" r="18" stroke="#7c4dff" strokeWidth="4" fill="none" />
+                      <path
+                        d="M22 7V2M22 42v-5M37 22h5M2 22h5M31.14 12.86l3.24-3.24M8.62 35.38l3.24-3.24M31.14 31.14l3.24 3.24M8.62 8.62l3.24 3.24"
+                        stroke="#7c4dff"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                      />
+                    </g>
+                    <animateTransform
+                      attributeName="transform"
+                      type="rotate"
+                      from="0 22 22"
+                      to="360 22 22"
+                      dur="1s"
+                      repeatCount="indefinite"
+                    />
+                  </svg>
+                )}
+                <Button type="submit" style={{ background: '#7c4dff', color: '#fff', fontWeight: 700, fontSize: '1.1rem', padding: '0.9rem 0' }} disabled={loading}>
+                  {loading ? 'Joining...' : 'Join Waitlist'}
+                </Button>
               </form>
             )}
           </div>
